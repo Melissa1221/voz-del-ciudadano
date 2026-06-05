@@ -1,0 +1,21 @@
+{
+  "name": "voz-del-ciudadano",
+  "version": "1.0.0",
+  "description": "PC3 CC3S2 - Patrones estructurales aplicados a Voz del Ciudadano.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "demo:composite": "tsx src/composite/main.ts",
+    "demo:adapter":   "tsx src/adapter/main.ts",
+    "demo:flyweight": "tsx src/flyweight/main.ts",
+    "demo:proxy":     "tsx src/proxy/main.ts",
+    "demo:facade":    "tsx src/facade/main.ts",
+    "test": "vitest --run"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3",
+    "vitest": "^1.6.0"
+  }
+}
