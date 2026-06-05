@@ -1,0 +1,7 @@
+node_modules/
+dist/
+coverage/
+*.log
+PLAN.md
+link.txt
+.DS_Store
