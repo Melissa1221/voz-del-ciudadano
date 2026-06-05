@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { PropuestaReal } from '../propuestaReal';
 import { PropuestaSelladaProxy } from '../propuestaSelladaProxy';
 import { ValidadorFirma } from '../../adapter/validadorFirma';
+import { ValidadorFirmaAdapter } from '../../adapter/validadorFirmaAdapter';
+import { ServicioExterno } from '../../adapter/servicioExterno';
 
 // Validador que acepta todo, para controlar el conteo en los tests.
 const aceptaTodo: ValidadorFirma = { esValida: () => true };
@@ -13,6 +15,23 @@ function firmar(p: PropuestaSelladaProxy, cantidad: number, dia: number): void {
 }
 
 describe('Proxy', () => {
+  // CP-02: una firma valida (segun el Adapter) se acepta y sube el conteo en uno.
+  it('cuenta una firma valida aceptada por el adapter', () => {
+    const validador = new ValidadorFirmaAdapter(new ServicioExterno());
+    const p = new PropuestaSelladaProxy(new PropuestaReal('Ley de transporte', validador));
+    expect(p.firmasValidas()).toBe(0);
+    p.firmar('12345678', 1);
+    expect(p.firmasValidas()).toBe(1);
+  });
+
+  // CP-03: una firma invalida (segun el Adapter) no se cuenta.
+  it('no cuenta una firma invalida rechazada por el adapter', () => {
+    const validador = new ValidadorFirmaAdapter(new ServicioExterno());
+    const p = new PropuestaSelladaProxy(new PropuestaReal('Ley de transporte', validador));
+    p.firmar('999', 1);
+    expect(p.firmasValidas()).toBe(0);
+  });
+
   // CP-06: umbral exacto de sellado.
   it('no sella con 24999 y sella con 25000', () => {
     const p = new PropuestaSelladaProxy(new PropuestaReal('Ley de transporte', aceptaTodo));
